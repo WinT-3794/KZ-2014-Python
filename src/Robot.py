@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------#
 # Copyright (c) WinT 3794 2015-2016.                                          #
 # Open Source Software - may be modified and shared by anyone.                #
-# The codemust be accompanied by the DBAD license file in the root directory  #
+# The code must be accompanied by the DBAD license file in the root directory #
 # of the project.                                                             #
 #-----------------------------------------------------------------------------#
 
