@@ -325,10 +325,10 @@ class Kooz2014 (wpilib.IterativeRobot):
             self.moveDriveSystem (0, 0, 0)
 
             # Move the shooter system
-            self.moveShooters (self.MotorOutput * 1000)
+            self.moveShooters (self.MotorOutput)
 
             # Wait some time and stop the shooters
-            wpilib.Timer.delay (self.ShooterTime)
+            wpilib.Timer.delay (self.ShooterTime * 1000)
             self.moveShooters (0)
 
             # Enable the safety features again
