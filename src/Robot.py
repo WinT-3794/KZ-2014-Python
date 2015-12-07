@@ -145,10 +145,8 @@ class Kooz2014 (wpilib.IterativeRobot):
         self.mCIM_RR.setSafetyEnabled (enabled)
 
     def removeDeadband (self, value):
-        # The movement is considered involuntary, since value is greater
-        # than zero, but does not reach the deadband limit
-        absolute = abs (value)
-        if absolute < self.DeadbandLimit and absolute > 0:
+        # The movement is considered involuntary
+        if abs (value) < self.DeadbandLimit:
             return 0
 
         # Value is greater than the deadband limit
