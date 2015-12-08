@@ -1,9 +1,11 @@
-#-----------------------------------------------------------------------------#
-# Copyright (c) WinT 3794 <http://wint3794.org>                               #
-# Open Source Software - may be modified and shared by anyone.                #
-# The code must be accompanied by the DBAD license file in the root directory #
-# of the project.                                                             #
-#-----------------------------------------------------------------------------#
+#
+# Copyright (c) WinT 3794 <http://wint3794.org>
+#
+# This project is released under the DBAD license. 
+# You are free to use, share and modify this project, just don't be a dick.
+# For more information regarding the licensing of this project, check the
+# LICENSE file in the root directory of this project.
+#
 
 import math
 import wpilib
