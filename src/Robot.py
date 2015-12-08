@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------#
-# Copyright (c) WinT 3794 2015-2016.                                          #
+# Copyright (c) WinT 3794 <http://wint3794.org                                #
 # Open Source Software - may be modified and shared by anyone.                #
 # The code must be accompanied by the DBAD license file in the root directory #
 # of the project.                                                             #
@@ -10,10 +10,10 @@ import wpilib
 
 # Define the maximum operator outputs
 OP_AXIS_POWER          = 0.85
-OP_BUTTON_POWER        = 0.70
+OP_BUTTON_POWER        = 0.75
 
 # Define dead-band values
-DB_MIN_VALUE           = 0.05
+DB_MIN_VALUE           = 0.15
 
 # Define CAN Controller IDs
 ID_CAN_CIM_FL          = 4
@@ -32,7 +32,6 @@ ID_PWM_ANDYMARK_LIFTER = 0
 
 # Define the SmartDashboard keys
 SD_DEADBAND            = "Deadband Limit"
-SD_MOTOR_OUTPUT        = "Motor speed during Autonomous"
 SD_DRIVE_TIME          = "Autonomous Drive Time (seconds)"
 SD_SHOOTER_TIME        = "Autonomous Shooter Time (seconds"
 SD_BACKWARDS           = "Drive Backwards during Autonomous"
@@ -73,43 +72,8 @@ class Kooz2014 (wpilib.IterativeRobot):
                                              self.mCIM_FR)
 
         # Configure the drive systems
-        self.CIM_Drive.setExpiration (0.1)
-        self.mCIM_Drive.setExpiration (0.1)
-
-    def setControlEnabled (self, enabled):
-        if (enabled):
-            # Enable CIM motors
-            self.CIM_FL.enableControl()
-            self.CIM_RL.enableControl()
-            self.CIM_FR.enableControl()
-            self.CIM_RR.enableControl()
-
-            # Enable Mini CIM motors
-            self.mCIM_FL.enableControl()
-            self.mCIM_RL.enableControl()
-            self.mCIM_FR.enableControl()
-            self.mCIM_RR.enableControl()
-
-            # Enable shooter motors
-            self.Shooter_A.enableControl()
-            self.Shooter_B.enableControl()
-
-        else:
-            # Disable CIM motors
-            self.CIM_FL.disableControl()
-            self.CIM_RL.disableControl()
-            self.CIM_FR.disableControl()
-            self.CIM_RR.disableControl()
-
-            # Disable Mini CIM motors
-            self.mCIM_FL.disableControl()
-            self.mCIM_RL.disableControl()
-            self.mCIM_FR.disableControl()
-            self.mCIM_RR.disableControl()
-
-            # Disable shooter motors
-            self.Shooter_A.disableControl()
-            self.Shooter_B.disableControl()
+        self.CIM_Drive.setExpiration (0.5)
+        self.mCIM_Drive.setExpiration (0.5)
 
     def setBrakeEnabled (self, brake):
         # Update brake mode of CIM motors
@@ -147,7 +111,7 @@ class Kooz2014 (wpilib.IterativeRobot):
     def removeDeadband (self, value):
         # The movement is considered involuntary
         if abs (value) < self.DeadbandLimit:
-            return 0
+            return value
 
         # Value is greater than the deadband limit
         else:
@@ -156,7 +120,7 @@ class Kooz2014 (wpilib.IterativeRobot):
     def moveDriveSystem (self, x, y, r):
         # Remove deadband from input values
         x = self.removeDeadband (x)
-        y = self.removeDeadband (r)
+        y = self.removeDeadband (y)
         r = self.removeDeadband (r)
 
         # Update the drive motors
@@ -176,13 +140,7 @@ class Kooz2014 (wpilib.IterativeRobot):
 
     def moveDriveWithJoystick (self, joystick):
         # Press A to coast, watch for people and windows!
-        if joystick.getRawButton (1):
-            self.setBrakeEnabled (False)
-
-        # Press B to re-enable CAN controllers if they stop working
-        if joystick.getRawButton (2):
-            self.setControlEnabled (True)
-            return
+        self.setBrakeEnabled (not joystick.getRawButton (1))
 
         # By default, the robot will not move
         x = 0
@@ -249,7 +207,6 @@ class Kooz2014 (wpilib.IterativeRobot):
         # Get autonomous settings from SmartDashboard
         self.DriveTime = wpilib.SmartDashboard.getDouble (SD_DRIVE_TIME, 4)
         self.ShooterTime = wpilib.SmartDashboard.getDouble (SD_SHOOTER_TIME, 2)
-        self.MotorOutput = wpilib.SmartDashboard.getDouble (SD_MOTOR_OUTPUT, 1)
         self.Backwards = wpilib.SmartDashboard.getBoolean (SD_BACKWARDS, False)
 
         # Get operator settings
@@ -261,9 +218,9 @@ class Kooz2014 (wpilib.IterativeRobot):
         self.initializeControllers()
         self.initializeDriveSystems()
 
-        # The shooter can shoot you if it tries to brake, I am not joking.
-        self.Shooter_A.enableBrakeMode (False)
-        self.Shooter_B.enableBrakeMode (False)
+        # Shooter should brake, it may be to lose if we let it coast
+        self.Shooter_A.enableBrakeMode (True)
+        self.Shooter_B.enableBrakeMode (True)
 
         # Initialize the joysticks
         self.Joystick_Primary = wpilib.Joystick (0)
@@ -277,7 +234,6 @@ class Kooz2014 (wpilib.IterativeRobot):
         self.refreshSettings()
         self.setBrakeEnabled (True)
         self.setSafetyEnabled (True)
-        self.setControlEnabled (True)
 
         # Decide if we should use one joystick or both
         if self.SingleDriver:
@@ -288,12 +244,10 @@ class Kooz2014 (wpilib.IterativeRobot):
     def disabledInit (self):
         self.setBrakeEnabled (True)
         self.setSafetyEnabled (True)
-        self.setControlEnabled (False)
 
     def autonomousInit (self):
         self.refreshSettings()
         self.setBrakeEnabled (True)
-        self.setControlEnabled (True)
         self.visitedAutonomous = False
 
     def teleopPeriodic (self):
@@ -314,9 +268,9 @@ class Kooz2014 (wpilib.IterativeRobot):
 
             # Move the drive system
             if not self.Backwards:
-                self.moveDriveSystem (0, self.MotorOutput, 0)
+                self.moveDriveSystem (0, OP_BUTTON_POWER, 0)
             else:
-                self.moveDriveSystem (0, self.MotorOutput * -1, 0)
+                self.moveDriveSystem (0, OP_BUTTON_POWER * -1, 0)
 
             # Wait some time and stop the drive system
             wpilib.Timer.delay (self.DriveTime * 1000)

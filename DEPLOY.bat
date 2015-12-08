@@ -11,5 +11,7 @@ echo PLEASE CLEAR THE OPERATION ZONE BEFORE PROCEEDING
 echo.
 pause
 cls
-py src/robot.py deploy --builtin
+cd src
+py robot.py deploy --builtin
+cd ..
 pause
