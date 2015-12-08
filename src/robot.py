@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------#
-# Copyright (c) WinT 3794 <http://wint3794.org                                #
+# Copyright (c) WinT 3794 <http://wint3794.org>                               #
 # Open Source Software - may be modified and shared by anyone.                #
 # The code must be accompanied by the DBAD license file in the root directory #
 # of the project.                                                             #
