@@ -47,14 +47,8 @@ class Drive:
         self.RR_B.enableBrakeMode (enabled)
         
     def setSafetyEnabled (self, enabled):
-        self.FL_A.setSafetyEnabled (enabled)
-        self.RL_A.setSafetyEnabled (enabled)
-        self.FR_A.setSafetyEnabled (enabled)
-        self.RR_A.setSafetyEnabled (enabled)
-        self.FL_B.setSafetyEnabled (enabled)
-        self.RL_B.setSafetyEnabled (enabled)
-        self.FR_B.setSafetyEnabled (enabled)
-        self.RR_B.setSafetyEnabled (enabled)
+        self.Drive_A.setSafetyEnabled (enabled)
+        self.Drive_B.setSafetyEnabled (enabled)
         
     def move (self, x, y, r):
         x = constants.RemoveDeadband (x)
