@@ -33,10 +33,10 @@ class Drive:
                                           self.RR_B,
                                           self.FR_B)
 										  
-        self.Drive_A.setInvertedMotor (DriveFR_A, True)
-        self.Drive_A.setInvertedMotor (DriveRR_A, True)
-        self.Drive_B.setInvertedMotor (DriveFR_B, True)
-        self.Drive_B.setInvertedMotor (DriveRR_B, True)
+        self.Drive_A.setInvertedMotor (2, True)
+        self.Drive_A.setInvertedMotor (3, True)
+        self.Drive_B.setInvertedMotor (2, True)
+        self.Drive_B.setInvertedMotor (3, True)
 
         self.Drive_A.setExpiration (0.5)
         self.Drive_B.setExpiration (0.5)
