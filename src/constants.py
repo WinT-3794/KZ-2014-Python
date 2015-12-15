@@ -10,7 +10,7 @@
 #
 
 # Define motor output ranges
-MaximumMotorOutput = 0.85
+MaximumMotorOutput = 0.95
 MinimumMotorOutput = 0.15
 
 # Define CAN Controller IDs
@@ -30,11 +30,11 @@ Lifter = 0
 
 # Ensures that the input value stays withing the motor output range
 def RemoveDeadband (input):
-    if input < MinimumMotorOutput:
+    if abs (input) < MinimumMotorOutput:
         return 0
     
     elif input > MaximumMotorOutput:
-        return MaximumMotorOutput * (input / abs (input))
+       return MaximumMotorOutput * (input / abs (input))
         
     else:
-        return input
+       return input

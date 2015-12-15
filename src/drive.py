@@ -32,6 +32,11 @@ class Drive:
                                           self.FL_B,
                                           self.RR_B,
                                           self.FR_B)
+										  
+        self.Drive_A.setInvertedMotor (DriveFR_A, True)
+        self.Drive_A.setInvertedMotor (DriveRR_A, True)
+        self.Drive_B.setInvertedMotor (DriveFR_B, True)
+        self.Drive_B.setInvertedMotor (DriveRR_B, True)
 
         self.Drive_A.setExpiration (0.5)
         self.Drive_B.setExpiration (0.5)
@@ -78,9 +83,9 @@ class Drive:
                 x = speed * -1
 
         else :
-            x = joystick.getX()
-            y = joystick.getZ()
-            r = joystick.getY()
+            x = joystick.getRawAxis (0)
+            y = joystick.getRawAxis (1)
+            r = joystick.getRawAxis (4)
 
         self.move (x, y, r)
         self.setBrakeEnabled (not joystick.getRawButton (1))
