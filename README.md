@@ -1,4 +1,4 @@
-![Python Logo](extra/python.png)
+![Aerial Assit Logo](extra/aerial-assist.png)
 
 This project requires you to install [Robotpy](http://robotpy.readthedocs.org/en/latest/getting_started.html).
 
